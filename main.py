@@ -64,7 +64,7 @@ def salvar_senha_no_banco(usuario, senha):
     print(f"Senha para o usuário '{usuario}' cadastrada com sucesso!")
     
     # verifica se ta sendo adicionado corretamente
-    result = session.query(Senhas).filter_by(NOME=usuario, SENHA=hash_senha, salt=base64.b64encode(salt).decode('utf-8')).first()
+    result = session.query(Senhas).filter_by(NOME=usuario, SENHA=hash_senha, SALT=base64.b64encode(salt).decode('utf-8')).first()
     # mostra os dados
     print(f"ID: {result.ID}\nNome: {result.NOME}\nSenha: {result.SENHA}\nSalt: {result.SALT}")
     print("-" * 20)
@@ -189,20 +189,10 @@ def deletar_senha():
         print(f"A senha e o usuário '{usuario}' foi deletada com sucesso!")
     else:
         print("Deleção cancelada.")
-def escolher_usuario():
-    usuario = input("Digite seu nome de usuário para acessar suas informações: ")
-    usuario_encontrado = session.query(Senhas).filter_by(NOME=usuario).first()
-    if usuario_encontrado:
-        print(f"Bem-vindo, {usuario}!\n")
-        return usuario
-    else:
-        print(f"Usuário {usuario} não encontrado no banco de dados. Tente novamente!")
-        return escolher_usuario()
-
 
 def escolher_opcao():
     print("Escolha o que deseja fazer: ")
-    escolher_usuario()
+    
     while True:
         print("1. Inserir senha")
         print("2. Consultar senha")
